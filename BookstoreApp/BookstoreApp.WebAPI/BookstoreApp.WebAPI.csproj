@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>a59e1258-9090-4eb2-ad2b-5cee3e4b326e</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0-preview.6.24328.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.7.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.7.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookstoreApp.Application\BookstoreApp.Application.csproj" />
+    <ProjectReference Include="..\BookstoreApp.Infrastructure\BookstoreApp.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
