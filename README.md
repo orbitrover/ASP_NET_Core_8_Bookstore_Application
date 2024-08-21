@@ -12,13 +12,11 @@ Test Layer: Contains unit tests.
 1.2 Setting Up the Project
 Create the Solution:
 
-bash
-Copy code
+```bash
 dotnet new sln -n BookstoreApp
 Create Projects:
-
-bash
-Copy code
+```
+```bash
 # Create the Domain project
 dotnet new classlib -n BookstoreApp.Domain
 dotnet sln add ./BookstoreApp.Domain/BookstoreApp.Domain.csproj
@@ -33,21 +31,25 @@ dotnet new classlib -n BookstoreApp.Infrastructure
 dotnet sln add ./BookstoreApp.Infrastructure/BookstoreApp.Infrastructure.csproj
 dotnet add ./BookstoreApp.Infrastructure/BookstoreApp.Infrastructure.csproj reference ./BookstoreApp.Application/BookstoreApp.Application.csproj
 
+# Create the WebAPI project
+dotnet new webapi -n BookstoreApp.WebAPI
+dotnet sln add ./BookstoreApp.WebUI/BookstoreApp.WebAPI.csproj
+dotnet add ./BookstoreApp.WebUI/BookstoreApp.WebAPI.csproj reference ./BookstoreApp.Infrastructure/BookstoreApp.Infrastructure.csproj
+
 # Create the WebUI project
 dotnet new webapi -n BookstoreApp.WebUI
 dotnet sln add ./BookstoreApp.WebUI/BookstoreApp.WebUI.csproj
-dotnet add ./BookstoreApp.WebUI/BookstoreApp.WebUI.csproj reference ./BookstoreApp.Infrastructure/BookstoreApp.Infrastructure.csproj
 
 # Create the Test project
 dotnet new xunit -n BookstoreApp.Tests
 dotnet sln add ./BookstoreApp.Tests/BookstoreApp.Tests.csproj
 dotnet add ./BookstoreApp.Tests/BookstoreApp.Tests.csproj reference ./BookstoreApp.Application/BookstoreApp.Application.csproj
+```
 2. Implementing the Bookstore Domain
 2.1 Create the Book Entity
 In the BookstoreApp.Domain project, create a new class Book.cs:
 
-csharp
-Copy code
+```csharp
 namespace BookstoreApp.Domain.Entities
 {
     public class Book
@@ -58,12 +60,12 @@ namespace BookstoreApp.Domain.Entities
         public decimal Price { get; set; }
     }
 }
+```
 3. Implementing the Application Layer
 3.1 Create Interfaces
 In BookstoreApp.Application, create an interface IBookService.cs:
 
-csharp
-Copy code
+```csharp
 using BookstoreApp.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -79,11 +81,11 @@ namespace BookstoreApp.Application.Interfaces
         Task DeleteBookAsync(int id);
     }
 }
+```
 3.2 Implement the Service
 In BookstoreApp.Application, create a class BookService.cs:
 
-csharp
-Copy code
+```csharp
 using BookstoreApp.Application.Interfaces;
 using BookstoreApp.Domain.Entities;
 using System.Collections.Generic;
@@ -135,12 +137,12 @@ namespace BookstoreApp.Application.Services
         }
     }
 }
+```
 4. Implementing the WebUI Layer
 4.1 Setup Dependency Injection
 In BookstoreApp.WebUI, modify Program.cs:
 
-csharp
-Copy code
+```csharp
 using BookstoreApp.Application.Interfaces;
 using BookstoreApp.Application.Services;
 
@@ -168,11 +170,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+```
+
 4.2 Create Book Controller
 In BookstoreApp.WebUI, create a BooksController.cs:
 
-csharp
-Copy code
+```csharp
 using BookstoreApp.Application.Interfaces;
 using BookstoreApp.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -235,12 +238,13 @@ namespace BookstoreApp.WebUI.Controllers
         }
     }
 }
+```
+
 5. Implementing Unit Tests
 5.1 Setup Unit Test for BookService
 In BookstoreApp.Tests, create a class BookServiceTests.cs:
 
-csharp
-Copy code
+```csharp
 using BookstoreApp.Application.Interfaces;
 using BookstoreApp.Application.Services;
 using BookstoreApp.Domain.Entities;
@@ -309,12 +313,15 @@ namespace BookstoreApp.Tests
         }
     }
 }
+```
+
 6. Running the Application and Tests
 Run the Web Application: You can start the WebAPI by running the BookstoreApp.WebUI project.
 Run the Tests: Use the following command to run the unit tests:
-bash
-Copy code
+```bash
 dotnet test
+```
+
 7. Integrating with CI/CD
 Now, with the code and tests in place, you can use the GitHub Actions CI/CD pipeline setup I provided earlier to automate building, testing, and deploying this application.
 
@@ -335,16 +342,15 @@ In BookstoreApp.Infrastructure, let's create a class that implements IBookServic
 1.1 Setting Up a Database Context (using Entity Framework Core)
 First, you need to install the required NuGet packages for Entity Framework Core.
 
-bash
-Copy code
+```bash
 dotnet add package Microsoft.EntityFrameworkCore
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add package Microsoft.EntityFrameworkCore.Design
 dotnet add package Microsoft.Extensions.Logging.Console
+```
 Next, create a BookstoreDbContext class in BookstoreApp.Infrastructure:
 
-csharp
-Copy code
+```csharp
 using BookstoreApp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -368,11 +374,11 @@ namespace BookstoreApp.Infrastructure.Persistence
         }
     }
 }
+```
 1.2 Implementing IBookService with Entity Framework Core
 Now, let's implement the IBookService in the BookstoreApp.Infrastructure project:
 
-csharp
-Copy code
+```csharp
 using BookstoreApp.Application.Interfaces;
 using BookstoreApp.Domain.Entities;
 using BookstoreApp.Infrastructure.Persistence;
@@ -424,6 +430,7 @@ namespace BookstoreApp.Infrastructure.Services
         }
     }
 }
+```
 2. Registering Infrastructure Services
 You need to configure the services in the BookstoreApp.WebUI project to use the BookService implementation from the Infrastructure Layer. Modify the Program.cs:
 
@@ -567,7 +574,6 @@ namespace BookstoreApp.Web.Models
 Create a BooksController in the Controllers folder:
 
 ```csharp
-Copy code
 using BookstoreApp.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
@@ -704,8 +710,7 @@ Create the corresponding Razor views in the Views/Books folder:
 
 Index.cshtml:
 
-html
-Copy code
+```html
 @model IEnumerable<BookstoreApp.Web.Models.BookViewModel>
 
 <h1>Books</h1>
@@ -738,10 +743,10 @@ Copy code
         }
     </tbody>
 </table>
+```
 Details.cshtml:
 
-html
-Copy code
+```html
 @model BookstoreApp.Web.Models.BookViewModel
 
 <h1>Book Details</h1>
@@ -759,15 +764,15 @@ Copy code
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </p>
-Create.cshtml and Edit.cshtml:
+```
+Create.cshtml:
 
-html
-Copy code
+```html
 @model BookstoreApp.Web.Models.BookViewModel
 
-<h1>@ViewData["Title"]</h1>
+<h1>Create</h1>
 
-<form asp-action="@ViewData["Action"]">
+<form asp-action="Create">
     <div class="form-group">
         <label asp-for="Title" class="control-label"></label>
         <input asp-for="Title" class="form-control" />
@@ -791,10 +796,41 @@ Copy code
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+```
+Edit.cshtml:
+```html
+@model BookstoreApp.Web.Models.BookViewModel
+
+<h1>Edit</h1>
+
+<form asp-action="Edit">
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Author" class="control-label"></label>
+        <input asp-for="Author" class="form-control" />
+        <span asp-validation-for="Author" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+```
 Delete.cshtml:
 
-html
-Copy code
+```html
 @model BookstoreApp.Web.Models.BookViewModel
 
 <h1>Delete Book</h1>
@@ -819,6 +855,7 @@ Copy code
     <input type="submit" value="Delete" class="btn btn-danger" /> |
     <a asp-action="Index">Back to List</a>
 </form>
+```
 4. Summary
 Now, your BookstoreApp.Web project is set up as an MVC application that interacts with the BookstoreApp.WebUI API. Here's a recap of what we have done:
 
