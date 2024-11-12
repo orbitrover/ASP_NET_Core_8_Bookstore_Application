@@ -18,8 +18,9 @@ builder.Services.AddDbContext<BookstoreDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("BookstoreApp.WebAPI")));
 // Register the BookRepository
 builder.Services.AddScoped<IBookRepository, BookRepository>();
-// Register the BookService
+// Register the Static BookService
 builder.Services.AddSingleton<IBookService, BookService>();
+// Register the BookService from the Infrastructure Layer
 builder.Services.AddScoped<IBookService, BookServiceDB>();
 var app = builder.Build();
 
